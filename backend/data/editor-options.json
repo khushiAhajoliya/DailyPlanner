@@ -1,0 +1,21 @@
+{
+  "palette": [
+    { "name": "Ink", "hex": "#1F1F1F" },
+    { "name": "Espresso", "hex": "#5B4636" },
+    { "name": "Terracotta", "hex": "#B5654A" },
+    { "name": "Burnt Amber", "hex": "#C27C0E" },
+    { "name": "Mustard", "hex": "#B8962E" },
+    { "name": "Olive", "hex": "#6B7A3A" },
+    { "name": "Sage", "hex": "#6F8F77" },
+    { "name": "Deep Teal", "hex": "#2F6F73" },
+    { "name": "Dusty Blue", "hex": "#5B7DA8" },
+    { "name": "Midnight", "hex": "#22335A" },
+    { "name": "Slate", "hex": "#4A5568" },
+    { "name": "Plum", "hex": "#6E4466" },
+    { "name": "Mauve", "hex": "#9C6F87" },
+    { "name": "Dusty Rose", "hex": "#B97A7A" },
+    { "name": "Cocoa", "hex": "#7A5540" },
+    { "name": "Forest", "hex": "#2E5E4E" }
+  ],
+  "fonts": ["Fredoka", "Fredoka One", "Nunito", "Comic Sans MS", "Quicksand", "Poppins", "Caveat", "Patrick Hand", "Playfair Display"]
+}

@@ -1,0 +1,26 @@
+# macOS / IDE
+.DS_Store
+.idea/
+*.iml
+
+# Secrets — never commit
+.figma_token
+**/.env
+frontend/keystore/
+frontend/keystore.properties
+
+# Backend
+backend/node_modules/
+backend/dist/
+backend/data/plans.json
+backend/data/reminders.json
+backend/data/*.tmp
+
+# Android
+frontend/.gradle/
+frontend/build/
+frontend/app/build/
+frontend/local.properties
+
+# Microsoft font (licensed; copy locally with frontend/tools/copy-system-fonts.sh)
+frontend/app/src/main/assets/fonts/comic_sans*.ttf

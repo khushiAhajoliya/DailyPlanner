@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.env
+.figma_token
+data/plans.json
+data/reminders.json

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "daily-planner-a4",
+    "fileKey": "l2Nfg93ynvXv8OaHjMoumN",
+    "nodeId": "69:292",
+    "name": "Daily Planner A4",
+    "category": "Daily"
+  },
+  {
+    "id": "routine-planner-2026",
+    "nodeId": "1:5",
+    "name": "Routine Planner 2026",
+    "category": "Daily",
+    "fileKey": "l2Nfg93ynvXv8OaHjMoumN"
+  },
+  {
+    "id": "daily-planner-pastel",
+    "nodeId": "33:2",
+    "name": "Daily Planner",
+    "category": "Daily",
+    "fileKey": "l2Nfg93ynvXv8OaHjMoumN"
+  },
+  {
+    "id": "design-1",
+    "fileKey": "y5nFgAhjk4uDcGbkPloLMf",
+    "nodeId": "1:80",
+    "name": "Design 1",
+    "category": "Daily"
+  },
+  {
+    "id": "design-2",
+    "fileKey": "y5nFgAhjk4uDcGbkPloLMf",
+    "nodeId": "37:2",
+    "name": "Design 2",
+    "category": "Daily"
+  },
+  {
+    "id": "design-3",
+    "fileKey": "y5nFgAhjk4uDcGbkPloLMf",
+    "nodeId": "38:229",
+    "name": "Design 3",
+    "category": "Daily"
+  },
+  {
+    "id": "design-4",
+    "fileKey": "y5nFgAhjk4uDcGbkPloLMf",
+    "nodeId": "39:504",
+    "name": "Design 4",
+    "category": "Daily"
+  }
+]

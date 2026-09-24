@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The dev backend runs over plain HTTP on the local machine / LAN.
+     Put the production backend behind HTTPS and remove cleartext before release. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
