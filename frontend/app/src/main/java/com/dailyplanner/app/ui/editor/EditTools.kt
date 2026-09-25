@@ -16,7 +16,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.SelectableDates
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
+import com.dailyplanner.app.render.DateFields
+import com.dailyplanner.app.render.adaptRuns
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.Check
@@ -102,9 +110,6 @@ private fun Element.Text.formatTime(t: LocalTime): String {
     return t.format(formatter(if (t.minute != 0 && !p.contains("mm")) p.replace("h", "h:mm") else p))
 }
 
-private fun Element.Text.parseDate(text: String): LocalDate =
-    runCatching { LocalDate.parse(valueOf(text), formatter(format ?: "MMMM d, yyyy", defaultYear = true)) }.getOrElse { LocalDate.now() }
-
 // ------------------------------------------------------------------ inline text field
 
 /**
@@ -118,21 +123,41 @@ fun InlineTextField(
     geometry: PageGeometry,
     fonts: FontRegistry,
     onText: (String) -> Unit,
+    /** One-line rows: the keyboard's Next / Enter moves to the row below (null = Done). */
+    onNext: (() -> Unit)? = null,
 ) {
     val density = LocalDensity.current
     val k = geometry.k
     val st = element.style
-    val family = state.familyOf(element) ?: st.fontFamily
-    val face = remember(family, st.fontWeight, st.italic) { fonts.resolve(family, st.fontWeight, st.italic) }
+    val family = state.familyOf(element)
+    val baseFamily = family ?: st.fontFamily
+    val face = remember(baseFamily, st.fontWeight, st.italic) { fonts.resolve(baseFamily, st.fontWeight, st.italic) }
     val pxToSp = { px: Float -> (px / (density.density * density.fontScale)).sp }
     val indent = if (element.list != "none") st.fontSize * 1.5f * k else 0f
+    val singleLine = element.maxLines == 1
 
-    var value by remember(element.id) {
-        val t = state.textOf(element)
-        mutableStateOf(TextFieldValue(t, TextRange(t.length)))
-    }
+    val current = state.textOf(element)
+    var value by remember(element.id) { mutableStateOf(TextFieldValue(current, TextRange(current.length))) }
+    // Undo / Redo / Reset change the text from outside: show it.
+    LaunchedEffect(current) { if (current != value.text) value = TextFieldValue(current, TextRange(current.length)) }
     val focus = remember { FocusRequester() }
     LaunchedEffect(element.id) { focus.requestFocus() }
+
+    // Mixed styles ("Date:" medium + value semibold) look the same while typing as on the page.
+    val styled = remember(element.id, family) {
+        VisualTransformation { text ->
+            val runs = adaptRuns(element.text, text.text, element.runs)
+            val out = if (runs.isEmpty()) text else androidx.compose.ui.text.buildAnnotatedString {
+                append(text.text)
+                for (r in runs) {
+                    if (r.start >= text.length) continue
+                    val tf = fonts.resolve(family ?: r.fontFamily ?: st.fontFamily, r.fontWeight ?: st.fontWeight, r.italic ?: st.italic)
+                    addStyle(androidx.compose.ui.text.SpanStyle(fontFamily = FontFamily(tf.typeface)), r.start, minOf(r.end, text.length))
+                }
+            }
+            TransformedText(out, OffsetMapping.Identity)
+        }
+    }
 
     val topLeft = geometry.toScreen(element.box.x, element.box.y)
     val wDp = with(density) { (element.box.w * k).toDp() }
@@ -141,15 +166,20 @@ fun InlineTextField(
     BasicTextField(
         value = value,
         onValueChange = { v ->
-            // Respect the design's line limit so text always fits its lines.
-            if (v.text.count { it == '\n' } + 1 > element.maxLines && element.list == "none" && element.maxLines > 1) return@BasicTextField
+            // Stay inside the design's lines: no more lines than the area holds.
+            if (!singleLine && v.text.count { it == '\n' } + 1 > element.maxLines) return@BasicTextField
             value = v
             onText(v.text)
         },
-        singleLine = element.maxLines == 1 && element.list == "none",
+        singleLine = singleLine,
         maxLines = element.maxLines,
+        visualTransformation = styled,
         cursorBrush = SolidColor(Amber),
-        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Sentences,
+            imeAction = if (singleLine) (if (onNext != null) ImeAction.Next else ImeAction.Done) else ImeAction.Default,
+        ),
+        keyboardActions = KeyboardActions(onNext = { onNext?.invoke() }),
         textStyle = TextStyle(
             color = Color(android.graphics.Color.parseColor(state.colorOf(element))),
             fontFamily = FontFamily(face.typeface),
@@ -262,22 +292,36 @@ fun EditToolbar(
         )
     }
     if (showDate) {
-        val initial = remember(text) { element.parseDate(text) }
-        val dp = rememberDatePickerState(initialSelectedDateMillis = initial.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli())
+        val today = LocalDate.now()
+        val initial = remember(text) { (DateFields.parse(element, text) ?: today).let { if (it.isBefore(today)) today else it } }
+        val dp = rememberDatePickerState(
+            initialSelectedDateMillis = initial.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli(),
+            selectableDates = FutureDates,
+        )
         DatePickerDialog(
             onDismissRequest = { showDate = false },
             confirmButton = {
                 TextButton(onClick = {
                     dp.selectedDateMillis?.let {
-                        val d = Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()
-                        onText(element.compose(d.format(formatter(element.format ?: "MMMM d, yyyy"))))
+                        onText(DateFields.format(element, Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()))
                     }
                     showDate = false
                 }) { Text("Set") }
             },
             dismissButton = { TextButton(onClick = { showDate = false }) { Text("Cancel") } },
-        ) { DatePicker(dp) }
+        ) {
+            // Calendar only: typing digits in the text mode made them shift (BUG-003).
+            DatePicker(dp, showModeToggle = false)
+        }
     }
+}
+
+/** Only today and later can be picked. */
+@OptIn(ExperimentalMaterial3Api::class)
+object FutureDates : SelectableDates {
+    private fun todayUtc() = LocalDate.now().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+    override fun isSelectableDate(utcTimeMillis: Long) = utcTimeMillis >= todayUtc()
+    override fun isSelectableYear(year: Int) = year >= LocalDate.now().year
 }
 
 @Composable

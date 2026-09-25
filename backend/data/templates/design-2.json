@@ -6,7 +6,7 @@
   "source": {
     "fileKey": "y5nFgAhjk4uDcGbkPloLMf",
     "nodeId": "37:2",
-    "syncedAt": "2026-09-24T12:30:21.936Z"
+    "syncedAt": "2026-09-25T12:31:19.849Z"
   },
   "page": {
     "width": 1080,
@@ -150,7 +150,8 @@
       "fill": "#FFE2EF",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -162,7 +163,8 @@
       "fill": "#FFE2EF",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -174,7 +176,8 @@
       "fill": "#FFE2EF",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -186,7 +189,8 @@
       "fill": "#FFE2EF",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -198,7 +202,8 @@
       "fill": "#FFE2EF",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -210,7 +215,8 @@
       "fill": "#FFE2EF",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1294,7 +1300,7 @@
       "type": "text",
       "id": "38:208",
       "name": "1:00 AM",
-      "text": "1:00 AM",
+      "text": "1:00 PM",
       "x": 584,
       "y": 1291,
       "w": 130,
@@ -1331,7 +1337,7 @@
       "type": "text",
       "id": "38:209",
       "name": "4:30 AM",
-      "text": "4:30 AM",
+      "text": "4:30 PM",
       "x": 584,
       "y": 1379,
       "w": 130,
@@ -1368,7 +1374,7 @@
       "type": "text",
       "id": "38:210",
       "name": "6:00 AM",
-      "text": "6:00 AM",
+      "text": "6:00 PM",
       "x": 584,
       "y": 1467,
       "w": 130,
@@ -1405,7 +1411,7 @@
       "type": "text",
       "id": "38:211",
       "name": "9:00 AM",
-      "text": "9:00 AM",
+      "text": "9:00 PM",
       "x": 584,
       "y": 1555,
       "w": 130,
@@ -1945,7 +1951,7 @@
     {
       "type": "text",
       "id": "slot-38:198",
-      "name": "1:00 AM …",
+      "name": "1:00 PM …",
       "text": "",
       "x": 748,
       "y": 1312,
@@ -1981,7 +1987,7 @@
     {
       "type": "text",
       "id": "slot-38:199",
-      "name": "4:30 AM …",
+      "name": "4:30 PM …",
       "text": "",
       "x": 748,
       "y": 1400,
@@ -2017,7 +2023,7 @@
     {
       "type": "text",
       "id": "slot-38:200",
-      "name": "6:00 AM …",
+      "name": "6:00 PM …",
       "text": "",
       "x": 748,
       "y": 1488,
@@ -2053,7 +2059,7 @@
     {
       "type": "text",
       "id": "slot-38:201",
-      "name": "9:00 AM …",
+      "name": "9:00 PM …",
       "text": "",
       "x": 748,
       "y": 1576,

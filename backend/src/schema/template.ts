@@ -38,6 +38,8 @@ export const ShapeElementSchema = z.object({
   fillOpacity: z.number().min(0).max(1).default(1),
   stroke: StrokeSchema.nullable(),
   radius: z.number().nonnegative().default(0),
+  /** The design's "selected day" marker; the app moves it to the weekday of the date. */
+  weekdayHighlight: z.boolean().default(false),
 });
 
 export const LineElementSchema = z.object({
@@ -110,6 +112,8 @@ export const TextElementSchema = z.object({
   editable: z.boolean().default(true),
   /** Empty writing area generated from a ruled line or an empty box. */
   slot: z.boolean().default(false),
+  /** Weekday letter (1 = Monday … 7 = Sunday); highlighted from the page's date, not editable. */
+  weekday: z.number().int().min(1).max(7).optional(),
 });
 
 export const ElementSchema = z.discriminatedUnion("type", [

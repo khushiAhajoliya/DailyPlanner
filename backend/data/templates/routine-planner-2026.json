@@ -6,7 +6,7 @@
   "source": {
     "fileKey": "l2Nfg93ynvXv8OaHjMoumN",
     "nodeId": "1:5",
-    "syncedAt": "2026-09-24T12:30:21.926Z"
+    "syncedAt": "2026-09-25T12:31:19.841Z"
   },
   "page": {
     "width": 1080,
@@ -171,7 +171,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 30
+      "radius": 30,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -233,7 +234,8 @@
       "fill": "#FFDB9B",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": true
     },
     {
       "type": "text",
@@ -268,8 +270,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 1
     },
     {
       "type": "text",
@@ -304,8 +307,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 2
     },
     {
       "type": "text",
@@ -340,8 +344,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 3
     },
     {
       "type": "text",
@@ -376,8 +381,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 4
     },
     {
       "type": "text",
@@ -412,8 +418,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 5
     },
     {
       "type": "text",
@@ -448,8 +455,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 6
     },
     {
       "type": "text",
@@ -484,8 +492,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 7
     },
     {
       "type": "line",
@@ -511,7 +520,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1891,7 +1901,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 31
+      "radius": 31,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -2015,7 +2026,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -2205,7 +2217,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -2253,7 +2266,8 @@
       "fill": "#FFDB9B",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -2305,7 +2319,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -2317,7 +2332,8 @@
       "fill": "#FFDB9B",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -2405,7 +2421,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -2417,7 +2434,8 @@
       "fill": "#FFDB9B",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -2505,7 +2523,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "text",

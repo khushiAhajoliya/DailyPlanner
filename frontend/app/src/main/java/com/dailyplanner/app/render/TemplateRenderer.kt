@@ -51,14 +51,25 @@ class TemplateRenderer(private val fonts: FontRegistry, private val images: Imag
         fill.alpha = 255
         canvas.drawRect(0f, 0f, page.width, page.height, fill)
 
+        // Weekday row (M T W T F S S): highlight the day of the page's date.
+        val selectedDay = DateFields.pageDate(template, state)?.dayOfWeek?.value
+        val dayLetter = selectedDay?.let { d -> template.elements.firstOrNull { it is Element.Text && it.weekday == d } as? Element.Text }
+        val hasMarker = template.elements.any { (it is Element.Rect && it.weekdayHighlight) || (it is Element.Ellipse && it.weekdayHighlight) }
+
         for (e in template.elements) when (e) {
             is Element.Image -> images.peek(e.src)?.let { bmp ->
                 bitmapPaint.alpha = (e.opacity * 255).toInt()
                 rect.set(e.x, e.y, e.x + e.w, e.y + e.h)
                 canvas.drawBitmap(bmp, null, rect, bitmapPaint)
             }
-            is Element.Rect -> shape(canvas, e.x, e.y, e.w, e.h, e.fill, e.fillOpacity, e.stroke, e.radius, oval = false)
-            is Element.Ellipse -> shape(canvas, e.x, e.y, e.w, e.h, e.fill, e.fillOpacity, e.stroke, 0f, oval = true)
+            is Element.Rect -> {
+                val (x, y) = markerPos(e.weekdayHighlight, e.x, e.y, e.w, e.h, dayLetter)
+                shape(canvas, x, y, e.w, e.h, e.fill, e.fillOpacity, e.stroke, e.radius, oval = false)
+            }
+            is Element.Ellipse -> {
+                val (x, y) = markerPos(e.weekdayHighlight, e.x, e.y, e.w, e.h, dayLetter)
+                shape(canvas, x, y, e.w, e.h, e.fill, e.fillOpacity, e.stroke, 0f, oval = true)
+            }
             is Element.Line -> {
                 stroke.color = parse(e.color)
                 stroke.strokeWidth = e.width
@@ -85,7 +96,15 @@ class TemplateRenderer(private val fonts: FontRegistry, private val images: Imag
                     }
                 }
             }
-            is Element.Text -> text(canvas, e, state, markersOnly = e.id == hiddenTextId)
+            is Element.Text -> {
+                if (!hasMarker && e === dayLetter) {
+                    // No marker in the design: a soft circle in the letter's own colour.
+                    fill.color = parse(state.colorOf(e)); fill.alpha = 45
+                    val r = maxOf(e.w, e.h) * 0.62f
+                    canvas.drawCircle(e.x + e.w / 2f, e.y + e.h / 2f, r, fill)
+                }
+                text(canvas, e, state, markersOnly = e.id == hiddenTextId)
+            }
         }
 
         selectedId?.let { id -> template.elements.firstOrNull { it.id == id } }?.let { sel ->
@@ -101,6 +120,11 @@ class TemplateRenderer(private val fonts: FontRegistry, private val images: Imag
         }
         canvas.restore()
     }
+
+    /** A weekday marker moves (centred) onto the selected letter; any other shape stays put. */
+    private fun markerPos(marker: Boolean, x: Float, y: Float, w: Float, h: Float, letter: Element.Text?): Pair<Float, Float> =
+        if (!marker || letter == null) x to y
+        else (letter.x + letter.w / 2f - w / 2f) to (letter.y + letter.h / 2f - h / 2f)
 
     private fun shape(
         canvas: Canvas, x: Float, y: Float, w: Float, h: Float,
@@ -180,21 +204,27 @@ class TemplateRenderer(private val fonts: FontRegistry, private val images: Imag
         val color = parse(key.color)
         val runs = adaptRuns(e.text, text, e.runs)
 
+        var size = st.fontSize
         fun paintAt(i: Int): TextPaint {
             val r = runs.firstOrNull { i >= it.start && i < it.end }
             val family = key.family ?: r?.fontFamily ?: st.fontFamily
-            return paint(family, r?.fontWeight ?: st.fontWeight, r?.italic ?: st.italic, st.fontSize, color, st.letterSpacing)
+            return paint(family, r?.fontWeight ?: st.fontWeight, r?.italic ?: st.italic, size, color, st.letterSpacing)
         }
-
-        val base = paint(key.family ?: st.fontFamily, st.fontWeight, st.italic, st.fontSize, color, st.letterSpacing)
-        val fm = base.fontMetrics
-        // Figma centres the font's ascent+descent inside each line box.
-        fun baseline(line: Int) = e.box.y + line * st.lineHeight + (st.lineHeight - (fm.descent - fm.ascent)) / 2f - fm.ascent
 
         val isList = e.list != "none"
         val indent = if (isList) st.fontSize * 1.5f else 0f
         // Small slack so the untouched Figma text never wraps because of shaping differences.
         val width = maxOf(e.box.w, e.w * 1.04f) - indent
+        // A time/date that got longer ("6 AM" -> "10:30 AM") shrinks to fit its cell instead of being cut off.
+        if (e.maxLines == 1 && e.role != "text" && !isList) {
+            val full = paint(key.family ?: st.fontFamily, st.fontWeight, st.italic, st.fontSize, color, st.letterSpacing).measureText(text)
+            if (full > width) size = st.fontSize * maxOf(0.6f, width / full)
+        }
+        val base = paint(key.family ?: st.fontFamily, st.fontWeight, st.italic, size, color, st.letterSpacing)
+        val fm = base.fontMetrics
+        // Figma centres the font's ascent+descent inside each line box.
+        fun baseline(line: Int) = e.box.y + line * st.lineHeight + (st.lineHeight - (fm.descent - fm.ascent)) / 2f - fm.ascent
+
         val paragraphs = if (isList) text.split('\n') else listOf(text)
 
         val ops = ArrayList<Op>()

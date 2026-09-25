@@ -32,6 +32,12 @@ fun adaptRuns(original: String, edited: String, runs: List<TextRun>): List<TextR
     if (runs.isEmpty() || original == edited) return runs
     var p = 0
     while (p < original.length && p < edited.length && original[p] == edited[p]) p++
+    if (p == 0) {
+        // Whole text rewritten: keep the style that covered most of the original text.
+        val main = runs.maxBy { it.end - it.start }
+        return if ((main.end - main.start) * 2 >= original.length && edited.isNotEmpty()) listOf(main.copy(start = 0, end = edited.length))
+        else emptyList()
+    }
     val kept = runs.mapNotNull { r ->
         when {
             r.end <= p -> r

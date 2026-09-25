@@ -63,6 +63,8 @@ sealed interface Element {
         val fillOpacity: Float = 1f,
         val stroke: Stroke? = null,
         val radius: Float = 0f,
+        /** Design's "selected day" marker, moved to the weekday of the page's date. */
+        val weekdayHighlight: Boolean = false,
     ) : Element
 
     @Serializable
@@ -74,6 +76,8 @@ sealed interface Element {
         val fillOpacity: Float = 1f,
         val stroke: Stroke? = null,
         val radius: Float = 0f,
+        /** Design's "selected day" marker, moved to the weekday of the page's date. */
+        val weekdayHighlight: Boolean = false,
     ) : Element
 
     @Serializable
@@ -119,6 +123,8 @@ sealed interface Element {
         val editable: Boolean = true,
         /** Empty writing area generated from a ruled line or box. */
         val slot: Boolean = false,
+        /** Weekday letter, 1 = Monday … 7 = Sunday. */
+        val weekday: Int? = null,
     ) : Element
 }
 

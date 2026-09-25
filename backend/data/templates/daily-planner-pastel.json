@@ -6,7 +6,7 @@
   "source": {
     "fileKey": "l2Nfg93ynvXv8OaHjMoumN",
     "nodeId": "33:2",
-    "syncedAt": "2026-09-24T12:30:21.929Z"
+    "syncedAt": "2026-09-25T12:31:19.844Z"
   },
   "page": {
     "width": 1080,
@@ -204,7 +204,8 @@
         "width": 2,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -256,7 +257,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -272,7 +274,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -288,7 +291,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -304,7 +308,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -320,7 +325,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -336,7 +342,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -352,7 +359,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -368,7 +376,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -528,7 +537,8 @@
         "width": 2,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -580,7 +590,8 @@
         "width": 2,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -632,7 +643,8 @@
         "width": 2,
         "align": "INSIDE"
       },
-      "radius": 15
+      "radius": 15,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -984,7 +996,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "checkbox",
@@ -1024,7 +1037,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "checkbox",
@@ -1064,7 +1078,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "checkbox",
@@ -1104,7 +1119,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "ellipse",
@@ -1120,7 +1136,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "ellipse",
@@ -1136,7 +1153,8 @@
         "width": 3,
         "align": "INSIDE"
       },
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "checkbox",

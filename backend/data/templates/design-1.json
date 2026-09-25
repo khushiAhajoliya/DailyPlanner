@@ -6,7 +6,7 @@
   "source": {
     "fileKey": "y5nFgAhjk4uDcGbkPloLMf",
     "nodeId": "1:80",
-    "syncedAt": "2026-09-24T12:30:21.934Z"
+    "syncedAt": "2026-09-25T12:31:19.848Z"
   },
   "page": {
     "width": 1080,
@@ -208,8 +208,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 1
     },
     {
       "type": "text",
@@ -244,8 +245,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 2
     },
     {
       "type": "text",
@@ -280,8 +282,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 3
     },
     {
       "type": "text",
@@ -316,8 +319,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 4
     },
     {
       "type": "text",
@@ -352,8 +356,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 5
     },
     {
       "type": "text",
@@ -388,8 +393,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 6
     },
     {
       "type": "text",
@@ -424,8 +430,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 7
     },
     {
       "type": "line",
@@ -956,7 +963,7 @@
       "type": "text",
       "id": "1:103",
       "name": "12 AM",
-      "text": "12 AM",
+      "text": "12 PM",
       "x": 31,
       "y": 989,
       "w": 505,
@@ -3207,7 +3214,7 @@
     {
       "type": "text",
       "id": "slot-1:160",
-      "name": "12 AM …",
+      "name": "12 PM …",
       "text": "",
       "x": 591,
       "y": 981.5,

@@ -196,6 +196,7 @@ function flatten(frame: FigmaNode, templateId: string): Flat {
           fillOpacity: fill?.opacity ?? 1,
           stroke: strokeOf(n),
           radius: n.cornerRadius ?? 0,
+          weekdayHighlight: false,
         });
         return;
       }
@@ -213,6 +214,7 @@ function flatten(frame: FigmaNode, templateId: string): Flat {
               fillOpacity: fill?.opacity ?? 1,
               stroke,
               radius: n.cornerRadius ?? 0,
+              weekdayHighlight: false,
             });
           }
         }
@@ -364,6 +366,72 @@ function computeTextBoxes(els: TemplateElement[], pageW: number, pageH: number):
   });
 }
 
+// ---------------------------------------------------------------------------
+// Schedule columns must run forward through the day. A common design slip is
+// "11 AM, 12 AM, 1 PM" or "10:30 AM, 1:00 AM, 4:30 AM": flip AM/PM when that fixes the order.
+// ---------------------------------------------------------------------------
+function fixTimeSequences(els: TemplateElement[], templateName: string): TemplateElement[] {
+  const parse = (t: string) => {
+    const m = /^(\d{1,2})(?::(\d{2}))?\s?(AM|PM)$/i.exec(t.trim());
+    if (!m) return null;
+    const h = Number(m[1]) % 12, min = Number(m[2] ?? 0), pm = m[3].toUpperCase() === "PM";
+    return { minutes: (h + (pm ? 12 : 0)) * 60 + min, pm };
+  };
+  const times = els.filter((e): e is TextElement => e.type === "text" && e.role === "time");
+  const columns = new Map<number, TextElement[]>();
+  for (const t of times) columns.set(Math.round(t.x / 40), [...(columns.get(Math.round(t.x / 40)) ?? []), t]);
+  const fixed = new Map<string, string>();
+  for (const col of columns.values()) {
+    if (col.length < 3) continue;
+    let last = -1;
+    for (const t of col.sort((a, b) => a.y - b.y)) {
+      const cur = parse(t.text);
+      if (!cur) continue;
+      let minutes = cur.minutes;
+      if (minutes < last) {
+        const flipped = (minutes + 12 * 60) % (24 * 60);
+        if (flipped >= last) {
+          const text = t.text.replace(/(AM|PM)$/i, (x) => (x.toUpperCase() === "AM" ? "PM" : "AM"));
+          fixed.set(t.id, text);
+          console.log(`  corrected time in ${templateName}: "${t.text}" -> "${text}"`);
+          minutes = flipped;
+        }
+      }
+      last = Math.max(last, minutes);
+    }
+  }
+  return els.map((e) => (e.type === "text" && fixed.has(e.id) ? { ...e, text: fixed.get(e.id)! } : e));
+}
+
+// ---------------------------------------------------------------------------
+// "M T W T F S S" rows: each letter becomes a weekday the app highlights from the
+// page's date (not editable). A circle behind one letter is the design's marker.
+// ---------------------------------------------------------------------------
+function linkWeekdays(els: TemplateElement[]): TemplateElement[] {
+  const letters = els.filter((e): e is TextElement => e.type === "text" && /^[MTWFS]$/.test(e.text.trim()));
+  const rows = new Map<number, TextElement[]>();
+  for (const l of letters) rows.set(Math.round(l.y / 10), [...(rows.get(Math.round(l.y / 10)) ?? []), l]);
+  const weekday = new Map<string, number>();
+  const markers = new Set<string>();
+  for (const row of rows.values()) {
+    const sorted = row.sort((a, b) => a.x - b.x);
+    const word = sorted.map((l) => l.text.trim()).join("");
+    const order = word === "MTWTFSS" ? [1, 2, 3, 4, 5, 6, 7] : word === "SMTWTFS" ? [7, 1, 2, 3, 4, 5, 6] : null;
+    if (!order) continue;
+    sorted.forEach((l, i) => weekday.set(l.id, order[i]));
+    for (const e of els) {
+      if (e.type !== "ellipse" && e.type !== "rect") continue;
+      if (e.w > 120 || e.h > 120) continue;
+      if (sorted.some((l) => Math.abs(e.x + e.w / 2 - (l.x + l.w / 2)) < 15 && Math.abs(e.y + e.h / 2 - (l.y + l.h / 2)) < 20)) markers.add(e.id);
+    }
+  }
+  return els.map((e) => {
+    if (e.type === "text" && weekday.has(e.id)) return { ...e, weekday: weekday.get(e.id), editable: false };
+    if ((e.type === "ellipse" || e.type === "rect") && markers.has(e.id)) return { ...e, weekdayHighlight: true };
+    return e;
+  });
+}
+
 /** Ordered-list rows stacked in one column continue numbering: 1., 2., 3. */
 function numberOrderedColumns(els: TemplateElement[]): TemplateElement[] {
   const ordered = els.filter((e): e is TextElement => e.type === "text" && e.list === "ordered");
@@ -399,6 +467,8 @@ export function normalizeFrame(input: NormalizeInput): { template: Template; exp
   let elements = buildCheckboxes(flat);
   elements = computeTextBoxes(elements, b.width, b.height);
   elements = numberOrderedColumns(elements);
+  elements = fixTimeSequences(elements, input.name);
+  elements = linkWeekdays(elements);
   elements = detectCheckboxes(elements);
   elements = buildWritingSlots(elements);
 

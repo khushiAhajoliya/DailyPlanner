@@ -6,7 +6,7 @@
   "source": {
     "fileKey": "y5nFgAhjk4uDcGbkPloLMf",
     "nodeId": "38:229",
-    "syncedAt": "2026-09-24T12:30:21.938Z"
+    "syncedAt": "2026-09-25T12:31:19.850Z"
   },
   "page": {
     "width": 1080,
@@ -235,7 +235,8 @@
       "fill": "#4A291D",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -251,7 +252,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -286,8 +288,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 1
     },
     {
       "type": "text",
@@ -322,8 +325,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 2
     },
     {
       "type": "text",
@@ -358,8 +362,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 3
     },
     {
       "type": "text",
@@ -394,8 +399,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 4
     },
     {
       "type": "text",
@@ -430,8 +436,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 5
     },
     {
       "type": "text",
@@ -466,8 +473,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 6
     },
     {
       "type": "text",
@@ -502,8 +510,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 7
     },
     {
       "type": "rect",
@@ -515,7 +524,8 @@
       "fill": "#4A291D",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -531,7 +541,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -590,7 +601,8 @@
       "fill": "#4A291D",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -606,7 +618,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -618,7 +631,8 @@
       "fill": "#4A291D",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -634,7 +648,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -646,7 +661,8 @@
       "fill": "#4A291D",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -662,7 +678,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 10
+      "radius": 10,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -674,7 +691,8 @@
       "fill": "#4A291D",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 5.42801570892334
+      "radius": 5.42801570892334,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -690,7 +708,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 5.42801570892334
+      "radius": 5.42801570892334,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -738,7 +757,8 @@
       "fill": "#4A291D",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 5.42801570892334
+      "radius": 5.42801570892334,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -754,7 +774,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 5.42801570892334
+      "radius": 5.42801570892334,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -802,7 +823,8 @@
       "fill": "#4A291D",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 5.42801570892334
+      "radius": 5.42801570892334,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -818,7 +840,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 5.42801570892334
+      "radius": 5.42801570892334,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1232,7 +1255,7 @@
       "type": "text",
       "id": "39:469",
       "name": "1:30 AM",
-      "text": "1:30 AM",
+      "text": "1:30 PM",
       "x": 558,
       "y": 813,
       "w": 130,
@@ -1269,7 +1292,7 @@
       "type": "text",
       "id": "39:471",
       "name": "2:00 AM",
-      "text": "2:00 AM",
+      "text": "2:00 PM",
       "x": 558,
       "y": 882,
       "w": 130,
@@ -1306,7 +1329,7 @@
       "type": "text",
       "id": "39:473",
       "name": "3:00 AM",
-      "text": "3:00 AM",
+      "text": "3:00 PM",
       "x": 558,
       "y": 951,
       "w": 130,
@@ -1343,7 +1366,7 @@
       "type": "text",
       "id": "39:475",
       "name": "3:30 AM",
-      "text": "3:30 AM",
+      "text": "3:30 PM",
       "x": 558,
       "y": 1020,
       "w": 130,
@@ -1380,7 +1403,7 @@
       "type": "text",
       "id": "39:477",
       "name": "4:00 AM",
-      "text": "4:00 AM",
+      "text": "4:00 PM",
       "x": 558,
       "y": 1089,
       "w": 130,
@@ -1417,7 +1440,7 @@
       "type": "text",
       "id": "39:479",
       "name": "5:30 AM",
-      "text": "5:30 AM",
+      "text": "5:30 PM",
       "x": 558,
       "y": 1158,
       "w": 130,
@@ -1454,7 +1477,7 @@
       "type": "text",
       "id": "39:481",
       "name": "7:00 AM",
-      "text": "7:00 AM",
+      "text": "7:00 PM",
       "x": 558,
       "y": 1227,
       "w": 130,
@@ -1491,7 +1514,7 @@
       "type": "text",
       "id": "39:483",
       "name": "9:00 AM",
-      "text": "9:00 AM",
+      "text": "9:00 PM",
       "x": 558,
       "y": 1296,
       "w": 130,
@@ -1528,7 +1551,7 @@
       "type": "text",
       "id": "39:485",
       "name": "10:30 AM",
-      "text": "10:30 AM",
+      "text": "10:30 PM",
       "x": 558,
       "y": 1365,
       "w": 142,
@@ -1766,7 +1789,7 @@
     {
       "type": "text",
       "id": "slot-39:468",
-      "name": "1:30 AM …",
+      "name": "1:30 PM …",
       "text": "",
       "x": 705,
       "y": 802,
@@ -1802,7 +1825,7 @@
     {
       "type": "text",
       "id": "slot-39:470",
-      "name": "2:00 AM …",
+      "name": "2:00 PM …",
       "text": "",
       "x": 705,
       "y": 871,
@@ -1838,7 +1861,7 @@
     {
       "type": "text",
       "id": "slot-39:472",
-      "name": "3:00 AM …",
+      "name": "3:00 PM …",
       "text": "",
       "x": 705,
       "y": 940,
@@ -1874,7 +1897,7 @@
     {
       "type": "text",
       "id": "slot-39:474",
-      "name": "3:30 AM …",
+      "name": "3:30 PM …",
       "text": "",
       "x": 705,
       "y": 1009,
@@ -1910,7 +1933,7 @@
     {
       "type": "text",
       "id": "slot-39:476",
-      "name": "4:00 AM …",
+      "name": "4:00 PM …",
       "text": "",
       "x": 705,
       "y": 1078,
@@ -1946,7 +1969,7 @@
     {
       "type": "text",
       "id": "slot-39:478",
-      "name": "5:30 AM …",
+      "name": "5:30 PM …",
       "text": "",
       "x": 705,
       "y": 1147,
@@ -1982,7 +2005,7 @@
     {
       "type": "text",
       "id": "slot-39:480",
-      "name": "7:00 AM …",
+      "name": "7:00 PM …",
       "text": "",
       "x": 705,
       "y": 1216,
@@ -2018,7 +2041,7 @@
     {
       "type": "text",
       "id": "slot-39:482",
-      "name": "9:00 AM …",
+      "name": "9:00 PM …",
       "text": "",
       "x": 705,
       "y": 1285,
@@ -2054,7 +2077,7 @@
     {
       "type": "text",
       "id": "slot-39:484",
-      "name": "10:30 AM …",
+      "name": "10:30 PM …",
       "text": "",
       "x": 705,
       "y": 1354,

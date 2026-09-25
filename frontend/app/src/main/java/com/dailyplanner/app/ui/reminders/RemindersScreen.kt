@@ -280,6 +280,18 @@ fun ReminderDialog(
     val at = LocalDateTime.of(date, time)
     val inPast = !at.isAfter(now)
 
+    // Duplicate checks (same time / same title).
+    val c = appContainer()
+    val existing = remember { c.repository.localReminders() }
+    fun localAt(r: Reminder) = runCatching {
+        OffsetDateTime.parse(r.remindAt).atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime().withSecond(0).withNano(0)
+    }.getOrNull()
+    val sameTime = existing.filter { it.enabled && localAt(it) == at.withSecond(0).withNano(0) }
+    val exactDuplicate = sameTime.any { it.title.trim().equals(title.trim(), ignoreCase = true) }
+    val sameTitleElsewhere = existing.filter {
+        it.title.trim().equals(title.trim(), ignoreCase = true) && localAt(it)?.let { t -> t != at && t.isAfter(now) } == true
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(heading) },
@@ -310,38 +322,58 @@ fun ReminderDialog(
                 // Always say exactly when it will ring.
                 Surface(
                     shape = RoundedCornerShape(12.dp),
-                    color = if (inPast) MaterialTheme.colorScheme.errorContainer else PeachSoft,
+                    color = if (inPast || exactDuplicate) MaterialTheme.colorScheme.errorContainer else PeachSoft,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             Icons.Outlined.NotificationsActive, null,
-                            tint = if (inPast) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                            tint = if (inPast || exactDuplicate) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
                         )
                         Text(
                             if (inPast) "This time has already passed. Pick a later time."
+                            else if (exactDuplicate) "You already have this reminder at this time."
                             else "Rings ${dayLabel(date, now.toLocalDate())} at ${time.format(timeFmt)} (${untilLabel(now, at)})",
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(start = 10.dp),
                         )
                     }
                 }
+                if (!inPast && !exactDuplicate && sameTime.isNotEmpty()) {
+                    Text(
+                        "Also at this time: " + sameTime.joinToString { "“${it.title}”" },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+                if (!inPast && sameTitleElsewhere.isNotEmpty()) {
+                    Text(
+                        "You also have “${title.trim()}” on " + sameTitleElsewhere.joinToString {
+                            localAt(it)!!.format(DateTimeFormatter.ofPattern("EEE d MMM, h:mm a", Locale.getDefault()))
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
         },
         confirmButton = {
             TextButton(
-                enabled = title.isNotBlank() && !inPast,
+                enabled = title.isNotBlank() && !inPast && !exactDuplicate,
                 onClick = {
                     val zoned = at.atZone(ZoneId.systemDefault()).toOffsetDateTime()
                     onCreate(ReminderInput(title.trim(), note.trim(), zoned.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).extra())
                 },
-            ) { Text("Set alarm") }
+            ) { Text(if (sameTime.isNotEmpty() && !exactDuplicate) "Set anyway" else "Set alarm") }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
     )
 
     if (pickDate) {
-        val s = rememberDatePickerState(initialSelectedDateMillis = date.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli())
+        val s = rememberDatePickerState(
+            initialSelectedDateMillis = date.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli(),
+            selectableDates = com.dailyplanner.app.ui.editor.FutureDates,
+        )
         DatePickerDialog(
             onDismissRequest = { pickDate = false },
             confirmButton = {
@@ -351,7 +383,7 @@ fun ReminderDialog(
                 }) { Text("Set") }
             },
             dismissButton = { TextButton(onClick = { pickDate = false }) { Text("Cancel") } },
-        ) { DatePicker(s) }
+        ) { DatePicker(s, showModeToggle = false) }
     }
     if (pickTime) {
         val s = rememberTimePickerState(time.hour, time.minute, is24Hour = false)

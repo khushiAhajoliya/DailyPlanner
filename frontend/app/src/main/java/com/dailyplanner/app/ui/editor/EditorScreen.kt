@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.Redo
+import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -52,6 +54,8 @@ import com.dailyplanner.app.ui.components.PlannerPage
 import com.dailyplanner.app.ui.components.appContainer
 import com.dailyplanner.app.ui.components.appViewModel
 import com.dailyplanner.app.ui.theme.PeachSoft
+
+private val BottomStrip = 64.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,6 +99,13 @@ fun EditorScreen(
                 },
                 actions = {
                     if (vm.template is Load.Ready) {
+                        // Undo / redo any change on the page (text, colour, font, ticks).
+                        IconButton(onClick = vm::undo, enabled = vm.canUndo) {
+                            Icon(Icons.AutoMirrored.Outlined.Undo, "Undo")
+                        }
+                        IconButton(onClick = vm::redo, enabled = vm.canRedo) {
+                            Icon(Icons.AutoMirrored.Outlined.Redo, "Redo")
+                        }
                         Button(
                             onClick = { vm.selectedId = null; if (planId == null) askTitle = true else vm.save { onSaved(it, false) } },
                             enabled = !vm.saving,
@@ -123,7 +134,9 @@ fun EditorScreen(
                 val navBottom = WindowInsets.navigationBars.getBottom(density)
                 val keyboardPx = (imeBottom - navBottom).coerceAtLeast(0)
 
-                Box(Modifier.fillMaxSize().padding(8.dp).onSizeChanged { areaW = it.width; areaH = it.height }) {
+                // A fixed strip at the bottom holds the hint / toolbar, so they never cover the page.
+                val stripPx = with(density) { BottomStrip.toPx() }
+                Box(Modifier.fillMaxSize().padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = BottomStrip).onSizeChanged { areaW = it.width; areaH = it.height }) {
                     // The page never zooms or scrolls. It only slides up when the keyboard
                     // would cover the line being typed, and only by the amount needed.
                     var lift = 0f
@@ -132,7 +145,7 @@ fun EditorScreen(
                         run {
                             val bottom = g.toScreen(0f, sel.box.y + sel.box.h).y
                             val top = g.toScreen(0f, sel.box.y).y
-                            val visible = areaH - keyboardPx - toolbarH - with(density) { 12.dp.toPx() }
+                            val visible = areaH + stripPx - keyboardPx - toolbarH - with(density) { 12.dp.toPx() }
                             lift = (bottom - visible).coerceIn(0f, (top - with(density) { 8.dp.toPx() }).coerceAtLeast(0f))
                         }
                     }
@@ -146,7 +159,14 @@ fun EditorScreen(
                         liftPx = lift,
                         onTap = vm::onTap,
                         overlay = { g ->
-                            if (typing) InlineTextField(sel!!, vm.state, g, c.fonts) { vm.setText(sel, it) }
+                            if (typing) {
+                                val next = vm.nextBelow(sel!!)
+                                InlineTextField(
+                                    sel, vm.state, g, c.fonts,
+                                    onText = { vm.setText(sel, it) },
+                                    onNext = next?.let { n -> { vm.selectedId = n.id } },
+                                )
+                            }
                         },
                     )
                 }
@@ -173,7 +193,7 @@ fun EditorScreen(
                         color = PeachSoft,
                         shape = RoundedCornerShape(50),
                         shadowElevation = 2.dp,
-                        modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 12.dp),
+                        modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp),
                     ) {
                         Text(
                             "Tap any text to write on the page",

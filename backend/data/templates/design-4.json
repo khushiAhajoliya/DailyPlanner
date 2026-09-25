@@ -6,7 +6,7 @@
   "source": {
     "fileKey": "y5nFgAhjk4uDcGbkPloLMf",
     "nodeId": "39:504",
-    "syncedAt": "2026-09-24T12:30:21.940Z"
+    "syncedAt": "2026-09-25T12:31:19.852Z"
   },
   "page": {
     "width": 1080,
@@ -215,7 +215,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 47
+      "radius": 47,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -250,8 +251,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 1
     },
     {
       "type": "text",
@@ -286,8 +288,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 2
     },
     {
       "type": "text",
@@ -322,8 +325,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 3
     },
     {
       "type": "text",
@@ -358,8 +362,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 4
     },
     {
       "type": "text",
@@ -394,8 +399,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 5
     },
     {
       "type": "text",
@@ -430,8 +436,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 6
     },
     {
       "type": "text",
@@ -466,8 +473,9 @@
       "role": "text",
       "prefix": "",
       "uppercase": false,
-      "editable": true,
-      "slot": false
+      "editable": false,
+      "slot": false,
+      "weekday": 7
     },
     {
       "type": "rect",
@@ -483,7 +491,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -536,7 +545,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -589,7 +599,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -642,7 +653,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -695,7 +707,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -748,7 +761,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -801,7 +815,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -854,13 +869,14 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
       "id": "40:675",
       "name": "12:00 AM",
-      "text": "12:00 AM",
+      "text": "12:00 PM",
       "x": 53,
       "y": 1138.1,
       "w": 167,
@@ -907,7 +923,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -960,7 +977,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1013,7 +1031,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1066,7 +1085,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1119,7 +1139,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1172,7 +1193,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1225,7 +1247,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1278,7 +1301,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1331,7 +1355,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1384,7 +1409,8 @@
         "width": 1.2499998807907104,
         "align": "INSIDE"
       },
-      "radius": 58.749996185302734
+      "radius": 58.749996185302734,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -1664,7 +1690,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 30
+      "radius": 30,
+      "weekdayHighlight": false
     },
     {
       "type": "image",
@@ -1691,7 +1718,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 60
+      "radius": 60,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -1707,7 +1735,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 60
+      "radius": 60,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -1723,7 +1752,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 60
+      "radius": 60,
+      "weekdayHighlight": false
     },
     {
       "type": "rect",
@@ -1739,7 +1769,8 @@
         "width": 1,
         "align": "INSIDE"
       },
-      "radius": 60
+      "radius": 60,
+      "weekdayHighlight": false
     },
     {
       "type": "text",
@@ -2049,7 +2080,8 @@
       "fill": "#FFEDAF",
       "fillOpacity": 1,
       "stroke": null,
-      "radius": 0
+      "radius": 0,
+      "weekdayHighlight": false
     },
     {
       "type": "image",
@@ -2581,7 +2613,7 @@
     {
       "type": "text",
       "id": "slot-40:674",
-      "name": "12:00 AM …",
+      "name": "12:00 PM …",
       "text": "",
       "x": 232,
       "y": 1138.5,
