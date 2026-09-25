@@ -264,6 +264,15 @@ fun ReminderDialog(
     var time by remember { mutableStateOf(start.toLocalTime()) }
     var pickDate by remember { mutableStateOf(false) }
     var pickTime by remember { mutableStateOf(false) }
+    // Until the user picks a date, the date follows the time: today if still ahead, else tomorrow.
+    var dateChosen by remember { mutableStateOf(false) }
+    fun setTime(t: LocalTime) {
+        time = t
+        if (!dateChosen) {
+            val today = LocalDate.now()
+            date = if (LocalDateTime.of(today, t).isAfter(LocalDateTime.now())) today else today.plusDays(1)
+        }
+    }
 
     // Re-evaluate every 20 s so "in 3 min" and "time has passed" stay correct while the dialog is open.
     var now by remember { mutableStateOf(LocalDateTime.now()) }
@@ -337,7 +346,7 @@ fun ReminderDialog(
             onDismissRequest = { pickDate = false },
             confirmButton = {
                 TextButton(onClick = {
-                    s.selectedDateMillis?.let { date = Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate() }
+                    s.selectedDateMillis?.let { date = Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate(); dateChosen = true }
                     pickDate = false
                 }) { Text("Set") }
             },
@@ -348,7 +357,7 @@ fun ReminderDialog(
         val s = rememberTimePickerState(time.hour, time.minute, is24Hour = false)
         AlertDialog(
             onDismissRequest = { pickTime = false },
-            confirmButton = { TextButton(onClick = { time = LocalTime.of(s.hour, s.minute); pickTime = false }) { Text("Set") } },
+            confirmButton = { TextButton(onClick = { setTime(LocalTime.of(s.hour, s.minute)); pickTime = false }) { Text("Set") } },
             dismissButton = { TextButton(onClick = { pickTime = false }) { Text("Cancel") } },
             text = { TimePicker(s) },
         )

@@ -32,12 +32,20 @@ private fun parseTime(s: String): LocalTime? {
     return timeParsers.firstNotNullOfOrNull { f -> runCatching { LocalTime.parse(v, f) }.getOrNull() }
 }
 
-/** The time written in the same row as the task ("8:00 AM | Morning Walk"), if any. */
+/**
+ * The time label of the task's own row ("8:00 AM | Morning Walk"): same line, directly to the
+ * left of the task. Times in other columns (e.g. a schedule on the other side of the page)
+ * are ignored.
+ */
 private fun rowTime(task: Element.Text, template: Template, state: PlanState): LocalTime? {
-    val mid = task.box.y + task.box.h / 2
+    val top = task.box.y; val bottom = task.box.y + task.box.h
     return template.elements.filterIsInstance<Element.Text>()
-        .filter { it.id != task.id && it.role == "time" && mid >= it.y - 8 && mid <= it.y + it.h + 8 }
-        .minByOrNull { kotlin.math.abs(it.x - task.x) }
+        .filter { t ->
+            t.id != task.id && t.role == "time" &&
+                t.y + t.h / 2 in (top - 8)..(bottom + 8) &&          // same line
+                t.x < task.box.x && task.box.x - (t.x + t.w) < 160    // right next to the task, on its left
+        }
+        .maxByOrNull { it.x }
         ?.let { parseTime(state.textOf(it)) }
 }
 

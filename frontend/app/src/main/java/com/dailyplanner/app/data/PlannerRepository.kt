@@ -103,15 +103,17 @@ class PlannerRepository(
         remindersFile.writeText(json.encodeToString(reminderSer, list.sortedBy { it.remindAt }))
     }
 
-    /** Local list; on first run also imports reminders that only exist on the backend. */
+    /** The phone's list, returned immediately. Backend sync (if configured) runs in the background. */
     suspend fun reminders(): List<Reminder> = withContext(Dispatchers.IO) {
         val local = localReminders()
-        val remote = api?.let { runCatching { it.reminders() }.getOrNull() } ?: return@withContext local
-        val merged = local + remote.filter { r -> local.none { it.id == r.id } && !deleted().contains(r.id) }
-        if (merged.size != local.size) writeLocal(merged)
-        // Push anything the backend has not seen yet.
-        local.filter { l -> remote.none { it.id == l.id } }.forEach { r -> sync { putReminder(r.id, r.toInput()) } }
-        localReminders()
+        sync {
+            val remote = reminders()
+            val current = localReminders()
+            val imported = remote.filter { r -> current.none { it.id == r.id } && !deleted().contains(r.id) }
+            if (imported.isNotEmpty()) writeLocal(current + imported)
+            current.filter { l -> remote.none { it.id == l.id } }.forEach { putReminder(it.id, it.toInput()) }
+        }
+        local
     }
 
     /** Old name kept for the boot receiver. */
