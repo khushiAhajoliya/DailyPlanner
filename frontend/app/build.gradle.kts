@@ -40,8 +40,11 @@ android {
         debug {
             // Installs next to any other "com.dailyplanner.app" already on the device.
             applicationIdSuffix = ".dev"
+            // Distinct launcher name so the test build is never confused with another "Daily Planner".
+            manifestPlaceholders["appLabel"] = "Daily Planner Dev"
         }
         release {
+            manifestPlaceholders["appLabel"] = "Daily Planner"
             signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

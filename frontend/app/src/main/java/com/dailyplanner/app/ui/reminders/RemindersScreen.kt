@@ -29,7 +29,10 @@ import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.NotificationsActive
 import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -101,7 +104,25 @@ class RemindersViewModel(private val repo: PlannerRepository, private val schedu
     }
 
     fun delete(r: Reminder) = viewModelScope.launch {
+        (state as? Load.Ready)?.let { st -> state = Load.Ready(st.value.filterNot { it.id == r.id }) }
+        scheduler.cancel(r)
         runCatching { repo.deleteReminder(r.id) }.onSuccess { scheduler.cancel(r); load() }.onFailure { error = it.friendly() }
+    }
+}
+
+internal fun dayLabel(d: LocalDate, today: LocalDate): String = when (d) {
+    today -> "today"
+    today.plusDays(1) -> "tomorrow"
+    else -> d.format(DateTimeFormatter.ofPattern("EEE, d MMM", Locale.getDefault()))
+}
+
+internal fun untilLabel(from: LocalDateTime, to: LocalDateTime): String {
+    val mins = java.time.Duration.between(from, to).toMinutes().coerceAtLeast(0)
+    return when {
+        mins < 1 -> "in under a minute"
+        mins < 60 -> "in $mins min"
+        mins < 24 * 60 -> "in ${mins / 60} h ${mins % 60} min"
+        else -> "in ${mins / (24 * 60)} days"
     }
 }
 
@@ -244,6 +265,12 @@ fun ReminderDialog(
     var pickDate by remember { mutableStateOf(false) }
     var pickTime by remember { mutableStateOf(false) }
 
+    // Re-evaluate every 20 s so "in 3 min" and "time has passed" stay correct while the dialog is open.
+    var now by remember { mutableStateOf(LocalDateTime.now()) }
+    LaunchedEffect(Unit) { while (true) { kotlinx.coroutines.delay(20_000); now = LocalDateTime.now() } }
+    val at = LocalDateTime.of(date, time)
+    val inPast = !at.isAfter(now)
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(heading) },
@@ -259,16 +286,47 @@ fun ReminderDialog(
                         Icon(Icons.Outlined.Schedule, null, Modifier.size(18.dp)); Text(" " + time.format(timeFmt))
                     }
                 }
+                // Quick picks: the most common way to set a reminder, and an easy way to test one.
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.horizontalScroll(rememberScrollState())) {
+                    listOf(5L to "5 min", 15L to "15 min", 30L to "30 min", 60L to "1 hour").forEach { (mins, label) ->
+                        AssistChip(
+                            onClick = {
+                                val t = LocalDateTime.now().plusMinutes(mins).withSecond(0).withNano(0)
+                                date = t.toLocalDate(); time = t.toLocalTime(); now = LocalDateTime.now()
+                            },
+                            label = { Text("In $label") },
+                        )
+                    }
+                }
+                // Always say exactly when it will ring.
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = if (inPast) MaterialTheme.colorScheme.errorContainer else PeachSoft,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Outlined.NotificationsActive, null,
+                            tint = if (inPast) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                        )
+                        Text(
+                            if (inPast) "This time has already passed. Pick a later time."
+                            else "Rings ${dayLabel(date, now.toLocalDate())} at ${time.format(timeFmt)} (${untilLabel(now, at)})",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(start = 10.dp),
+                        )
+                    }
+                }
             }
         },
         confirmButton = {
             TextButton(
-                enabled = title.isNotBlank(),
+                enabled = title.isNotBlank() && !inPast,
                 onClick = {
-                    val at = LocalDateTime.of(date, time).atZone(ZoneId.systemDefault()).toOffsetDateTime()
-                    onCreate(ReminderInput(title.trim(), note.trim(), at.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).extra())
+                    val zoned = at.atZone(ZoneId.systemDefault()).toOffsetDateTime()
+                    onCreate(ReminderInput(title.trim(), note.trim(), zoned.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).extra())
                 },
-            ) { Text("Add") }
+            ) { Text("Set alarm") }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
     )

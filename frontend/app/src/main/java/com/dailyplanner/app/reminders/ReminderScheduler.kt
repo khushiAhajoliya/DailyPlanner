@@ -33,27 +33,42 @@ class ReminderScheduler(private val context: Context) {
         nm.createNotificationChannel(channel)
     }
 
-    private fun pending(r: Reminder, flags: Int): PendingIntent? {
+    private fun pending(id: String, title: String, note: String, flags: Int): PendingIntent? {
         val intent = Intent(context, ReminderReceiver::class.java).apply {
-            putExtra(ReminderReceiver.EXTRA_ID, r.id)
-            putExtra(ReminderReceiver.EXTRA_TITLE, r.title)
-            putExtra(ReminderReceiver.EXTRA_NOTE, r.note)
+            putExtra(ReminderReceiver.EXTRA_ID, id)
+            putExtra(ReminderReceiver.EXTRA_TITLE, title)
+            putExtra(ReminderReceiver.EXTRA_NOTE, note)
         }
-        return PendingIntent.getBroadcast(context, r.id.hashCode(), intent, flags or PendingIntent.FLAG_IMMUTABLE)
+        return PendingIntent.getBroadcast(context, id.hashCode(), intent, flags or PendingIntent.FLAG_IMMUTABLE)
     }
 
     fun schedule(r: Reminder) {
         cancel(r)
         val at = runCatching { OffsetDateTime.parse(r.remindAt).toInstant().toEpochMilli() }.getOrNull() ?: return
-        if (!r.enabled || at <= System.currentTimeMillis()) return
-        val pi = pending(r, PendingIntent.FLAG_UPDATE_CURRENT)!!
-        val exact = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarms.canScheduleExactAlarms()
-        if (exact) alarms.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pi)
-        else alarms.setWindow(AlarmManager.RTC_WAKEUP, at, 60_000L, pi) // at most ~1 min late
+        if (!r.enabled) return
+        if (at <= System.currentTimeMillis()) {
+            android.util.Log.w("DailyPlannerAlarm", "not scheduled, time already passed: ${r.remindAt}")
+            return
+        }
+        scheduleAt(r.id, r.title, r.note, at)
     }
 
+    /** Alarm-clock alarms: exact, exempt from battery savers, shown with the alarm icon. */
+    private fun scheduleAt(id: String, title: String, note: String, at: Long) {
+        val pi = pending(id, title, note, PendingIntent.FLAG_UPDATE_CURRENT)!!
+        val show = PendingIntent.getActivity(
+            context, 0, Intent(context, com.dailyplanner.app.MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE,
+        )
+        if (canRingOnTime()) alarms.setAlarmClock(AlarmManager.AlarmClockInfo(at, show), pi)
+        else alarms.setWindow(AlarmManager.RTC_WAKEUP, at, 60_000L, pi) // at most ~1 min late
+        android.util.Log.i("DailyPlannerAlarm", "armed $id for ${java.time.Instant.ofEpochMilli(at)} exact=${canRingOnTime()}")
+    }
+
+    fun snooze(id: String, title: String, note: String, minutes: Int) =
+        scheduleAt(id, title, note, System.currentTimeMillis() + minutes * 60_000L)
+
     fun cancel(r: Reminder) {
-        pending(r, PendingIntent.FLAG_NO_CREATE)?.let { alarms.cancel(it); it.cancel() }
+        pending(r.id, r.title, r.note, PendingIntent.FLAG_NO_CREATE)?.let { alarms.cancel(it); it.cancel() }
     }
 
     /** Android 12+ needs the user's OK ("Alarms & reminders") for on-the-minute reminders. */
